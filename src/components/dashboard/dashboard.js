@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router";
+import TopNav from "../header";
 export default function Dashboard({ auth, setauth }) {
   const navigate = useNavigate();
 
@@ -28,6 +29,7 @@ export default function Dashboard({ auth, setauth }) {
 
   return (
     <div>
+      <TopNav auth={auth} setauth={setauth} />
       <h3>{auth?.user?.email}</h3>
       <h3>{auth?.user?.username}</h3>
       <h3>{auth?.user?.role}</h3>
