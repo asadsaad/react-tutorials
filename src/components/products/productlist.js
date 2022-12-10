@@ -56,7 +56,7 @@ export default function ProductList({ auth, setauth }) {
           instock,
         }
       );
-      console.log(res.data);
+      setproduct((prev) => [res?.data?.data, ...prev]);
     } catch (error) {
       console.log(error);
     }
@@ -67,6 +67,8 @@ export default function ProductList({ auth, setauth }) {
       const res = await axios.delete(
         `http://localhost:5000/product/delete-product/${id}`
       );
+      const newproduct = product.filter((p) => p._id != id);
+      setproduct(newproduct);
       console.log(res.data);
     } catch (error) {
       console.log(error);
@@ -87,6 +89,7 @@ export default function ProductList({ auth, setauth }) {
               fullWidth
               size="small"
               sx={{ mb: 0.5 }}
+              value={productTitle}
               onChange={(e) => setproducttitle(e.target.value)}
             />
             <TextField
@@ -94,6 +97,7 @@ export default function ProductList({ auth, setauth }) {
               fullWidth
               size="small"
               sx={{ mb: 0.5 }}
+              value={productDescription}
               onChange={(e) => setproductdescription(e.target.value)}
             />
             <TextField
@@ -101,11 +105,13 @@ export default function ProductList({ auth, setauth }) {
               fullWidth
               size="small"
               sx={{ mb: 0.5 }}
+              value={catagery}
               onChange={(e) => setcatagery(e.target.value)}
             />
             <TextField
               label="Brand"
               fullWidth
+              value={brand}
               size="small"
               sx={{ mb: 0.5 }}
               onChange={(e) => setbrand(e.target.value)}
@@ -113,6 +119,7 @@ export default function ProductList({ auth, setauth }) {
             <TextField
               label="Price"
               fullWidth
+              value={price}
               size="small"
               sx={{ mb: 0.5 }}
               onChange={(e) => setprice(e.target.value)}
@@ -120,6 +127,7 @@ export default function ProductList({ auth, setauth }) {
             <TextField
               label="Available Stock"
               fullWidth
+              value={instock}
               size="small"
               sx={{ mb: 0.5 }}
               onChange={(e) => setstock(e.target.value)}
@@ -127,6 +135,7 @@ export default function ProductList({ auth, setauth }) {
             <TextField
               label="Images"
               fullWidth
+              value={images && images}
               size="small"
               sx={{ mb: 0.5 }}
               onChange={(e) => setimages(e.target.value)}
