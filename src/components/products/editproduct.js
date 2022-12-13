@@ -14,8 +14,13 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-export default function Editprodct({ open, setOpen }) {
-  const [product, setproduct] = React.useState();
+export default function Editprodct({
+  open,
+  setOpen,
+  currentproduct,
+  products,
+  setproduct,
+}) {
   const [productTitle, setproducttitle] = React.useState();
   const [productDescription, setproductdescription] = React.useState();
   const [catagery, setcatagery] = React.useState();
@@ -24,6 +29,18 @@ export default function Editprodct({ open, setOpen }) {
   const [instock, setstock] = React.useState();
 
   const [images, setimages] = React.useState();
+
+  React.useEffect(() => {
+    if (currentproduct) {
+      setproducttitle(currentproduct?.productTitle);
+      setproductdescription(currentproduct?.productDescription);
+      setcatagery(currentproduct?.catagery);
+      setbrand(currentproduct?.brand);
+      setimages(currentproduct?.images[0]);
+      setprice(currentproduct?.price);
+      setstock(currentproduct?.instock);
+    }
+  }, [currentproduct]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -35,8 +52,8 @@ export default function Editprodct({ open, setOpen }) {
   const handleedit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
-        "http://localhost:5000/product/add-product",
+      const res = await axios.put(
+        `http://localhost:5000/product/update-product/${currentproduct._id}`,
         {
           productTitle,
           productDescription,
@@ -47,7 +64,12 @@ export default function Editprodct({ open, setOpen }) {
           instock,
         }
       );
-      console.log(res.data);
+      const updatedproducts = products.map((product) =>
+        product._id == currentproduct._id ? res.data.data : product
+      );
+      setproduct(updatedproducts);
+
+      setOpen(false);
     } catch (error) {
       console.log(error);
     }
@@ -65,6 +87,7 @@ export default function Editprodct({ open, setOpen }) {
               size="small"
               sx={{ mb: 0.5 }}
               onChange={(e) => setproducttitle(e.target.value)}
+              value={productTitle}
             />
             <TextField
               label="Product Description"
@@ -72,18 +95,21 @@ export default function Editprodct({ open, setOpen }) {
               size="small"
               sx={{ mb: 0.5 }}
               onChange={(e) => setproductdescription(e.target.value)}
+              value={productDescription}
             />
             <TextField
               label="Catagery"
               fullWidth
               size="small"
               sx={{ mb: 0.5 }}
+              value={catagery}
               onChange={(e) => setcatagery(e.target.value)}
             />
             <TextField
               label="Brand"
               fullWidth
               size="small"
+              value={brand}
               sx={{ mb: 0.5 }}
               onChange={(e) => setbrand(e.target.value)}
             />
@@ -91,6 +117,7 @@ export default function Editprodct({ open, setOpen }) {
               label="Price"
               fullWidth
               size="small"
+              value={price}
               sx={{ mb: 0.5 }}
               onChange={(e) => setprice(e.target.value)}
             />
@@ -100,11 +127,13 @@ export default function Editprodct({ open, setOpen }) {
               size="small"
               sx={{ mb: 0.5 }}
               onChange={(e) => setstock(e.target.value)}
+              value={instock}
             />
             <TextField
               label="Images"
               fullWidth
               size="small"
+              value={images}
               sx={{ mb: 0.5 }}
               onChange={(e) => setimages(e.target.value)}
             />

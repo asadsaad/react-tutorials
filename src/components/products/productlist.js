@@ -22,6 +22,7 @@ export default function ProductList({ auth, setauth }) {
   const [brand, setbrand] = useState();
   const [price, setprice] = useState();
   const [instock, setstock] = useState();
+  const [producttoedit, setproducttoedit] = useState();
 
   const [images, setimages] = useState();
 
@@ -77,6 +78,10 @@ export default function ProductList({ auth, setauth }) {
   if (loadingp) {
     return <CircularProgress />;
   }
+  const handleedit = (e, product) => {
+    setproducttoedit(product);
+    setOpen(true);
+  };
   return (
     <>
       <TopNav auth={auth} setauth={setauth} />
@@ -166,14 +171,20 @@ export default function ProductList({ auth, setauth }) {
                 variant="contained"
                 endIcon={<Edit />}
                 sx={{ mt: 1 }}
-                onClick={() => setOpen(true)}
+                onClick={(e) => handleedit(e, p)}
               >
                 Edit
               </Button>
             </Paper>
           ))}
       </Container>
-      <Editprodct open={open} setOpen={setOpen} />
+      <Editprodct
+        open={open}
+        setOpen={setOpen}
+        currentproduct={producttoedit}
+        setproduct={setproduct}
+        products={product}
+      />
     </>
   );
 }
