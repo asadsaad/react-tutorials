@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
 
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import Auth from "./components/auth/auth";
 import Login from "./components/auth/login";
 import Register from "./components/auth/register";
 import Dashboard from "./components/dashboard/dashboard";
@@ -50,7 +51,8 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <Routes>
+        <Auth />
+        {/* <Routes>
           <Route
             path="/"
             element={<ProductList auth={auth} setauth={setauth} />}
@@ -67,7 +69,7 @@ function App() {
             path="/dashboard"
             element={<Dashboard auth={auth} setauth={setauth} />}
           />
-        </Routes>
+        </Routes> */}
       </div>
     </BrowserRouter>
   );
